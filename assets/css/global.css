@@ -1,0 +1,197 @@
+* {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+}
+
+body{
+    background: #ffffff00 url(https://assets.pokemon.com/static2/_ui/img/chrome/body_bg.png) center center/auto repeat padding-box;
+}
+
+.content {
+    padding: 0.5rem;
+    padding-top: 200px;
+    margin-top: 1rem;
+}
+
+
+.links{
+    color: white;
+    align-items: flex-end;
+}
+
+/* Botões das redes sociais */
+.fixed-buttons {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    margin:10px;
+}
+
+.container {
+    text-align: center;
+    margin-top: 4rem; 
+    color: white;
+}
+
+/* Estiliza o header para ser fixo no topo */
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estiliza a imagem para manter as proporções e centralizá-la */
+.pokedexImg {
+    display: block;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    max-width: 300px; 
+}
+
+/* Estiliza a barra de pesquisa e o botão */
+.input-group {
+    display: flex; 
+    flex: 1;
+}
+
+.input-group .form-control,
+.input-group .btn {
+    margin-left: 5px;
+}
+
+/*Estiliza os paragrafos de explicação*/
+p {
+    font-size: 1.2rem; 
+    line-height: 1.5; 
+    max-width: 800px; 
+    margin: 0.5rem auto; 
+    text-align: justify;
+    color: white;
+}
+
+/*Imagem do Charizard no canto da tela*/
+.left-bottom-image {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 900px;
+    height: auto;
+    opacity: 0.5;
+    z-index: -1;  
+    transform: scaleX(-1);
+}
+
+.fade-out {
+    animation: fadeOut 1s forwards;
+}
+
+.fade-in {
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/*Animações*/
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/*Responsividada*/
+@media (max-width: 600px) {
+    p {
+        font-size: 1rem;
+        margin: 1rem;
+    }
+}
+
+@media (max-width: 900px) {
+    p {
+        font-size: 1rem;
+        margin: 1rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .left-bottom-image {
+        width: 400px;
+    }
+}
+
+@media (max-width: 600px) {
+    .pokedexImg {
+        max-width: 200px;
+    }
+    .explanation {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 1000px) {
+    .fixed-buttons {
+        position: relative; 
+        top: auto;
+        bottom: auto; 
+        left: auto;
+        right: auto; 
+        transform: none; 
+        padding-top: 1rem;
+        margin: 0 auto; 
+        display: block; 
+        width: fit-content; 
+    }
+}
+
+@media (max-width: 576px) {
+    .fixed-buttons {
+        position: relative; 
+        top: auto;
+        bottom: auto;
+        left: auto; 
+        right: auto; 
+        transform: none;
+        padding-top: 1rem;
+        margin: 0 auto; 
+        display: block; 
+        width: fit-content; 
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .content {
+        max-width: 992px;
+        height: auto;
+        margin: 1rem auto;
+        border-radius: 1rem;
+    }
+}
