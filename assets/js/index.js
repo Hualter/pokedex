@@ -5,7 +5,7 @@ document.getElementById('btnPokedex').addEventListener('click', function(event) 
     document.body.classList.add('fade-out');
     
     setTimeout(function() {
-        window.location.href = '/pokedex.html'; 
+        window.location.href = 'pokedex.html'; 
     }, 1000);
 });
 
