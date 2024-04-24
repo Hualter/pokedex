@@ -50,8 +50,8 @@ window.addEventListener('scroll', () => {
         // Verifica se o usuário rolou até o final da página
             if (scrollPosition + visibleHeight >= totalHeight - errorMargin) {
                 // Exibe o ícone de carregamento
-                console.log("Exibindo o ícone de carregamento");
-                loadingSpinner.classList.remove('d-none');
+                console.log("Exibindo o ícone de carregamento");// Exibir o loading spinner
+                document.getElementById('loading-spinner').classList.remove('d-none');
                 
                 // Atualiza o offset e calcula a quantidade de itens na próxima página
                 offset += limit;
@@ -61,18 +61,21 @@ window.addEventListener('scroll', () => {
                 const successCallback = () => {
                     console.log("Carregamento concluído, ocultando o ícone de carregamento");
                     // Oculta o ícone de carregamento
-                    loadingSpinner.classList.add('d-none');
+                    // Ocultar o loading spinner
+                    document.getElementById('loading-spinner').classList.add('d-none');
                 };
 
                 const errorCallback = (error) => {
                     // Oculta o ícone de carregamento mesmo em caso de erro
                     console.error("Erro ao carregar os itens:", error);
-                    loadingSpinner.classList.add('d-none');
+                    // Ocultar o loading spinner
+                    document.getElementById('loading-spinner').classList.add('d-none');
                 };
 
                 if (qtdRecordsWithNexPage >= maxRecords)
                 {
-                    loadingSpinner.classList.add('d-none');
+                    // Ocultar o loading spinner
+                    document.getElementById('loading-spinner').classList.add('d-none');
                 }
                     // Carrega os itens com base em `qtdRecordsWithNexPage` e `maxRecords`
                     if (qtdRecordsWithNexPage >= maxRecords) {
@@ -81,7 +84,7 @@ window.addEventListener('scroll', () => {
                         loadPokemonItens(offset, newLimit)
                             .then(successCallback)
                             .catch(errorCallback);
-                            loadingSpinner.classList.add('d-none');
+                            document.getElementById('loading-spinner').classList.add('d-none');
                     } else {
                         console.log(`Carregando com offset ${offset} e limit ${limit}`);
                         loadPokemonItens(offset, limit)
@@ -98,10 +101,8 @@ function showPokemonModal(pokemonData) {
     const modal = new bootstrap.Modal(document.getElementById('pokemonModal'), {
         backdrop: false, // Impede o fechamento ao clicar fora do modal
     });
-
     // Atualiza o currentPokemonIndex com o índice correto
     currentPokemonIndex = pokemonData.id - 1;
-
     // Preenche o conteúdo do modal com os detalhes do Pokémon
     const modalBody = document.getElementById('pokemonModalBody');
     modalBody.innerHTML = `
@@ -159,21 +160,18 @@ function showPokemonModal(pokemonData) {
 
     //Atualiza visibilidade dos botões de navegação
     updateButtonVisibility();
-
     // Adiciona listeners de evento aos botões de navegação
     document.getElementById('previousPokemonButton').addEventListener('click', goToPreviousPokemon);
     document.getElementById('nextPokemonButton').addEventListener('click', goToNextPokemon);
     
     const previousButton = document.getElementById('previousPokemonButton');
     const nextButton = document.getElementById('nextPokemonButton');
-
     //Verificar se é possivel ir para pokémon anterior ou proximo e alterar a visibilidade do botão
     if(currentPokemonIndex === 0){
         previousButton.style.display = 'none';}
     if(currentPokemonIndex === pokemonList.children.length - 1){
         nextButton.style.display = 'none';
-    }
-        
+    }    
     // Função para navegar para o Pokémon anterior
     function goToPreviousPokemon() {
         if (currentPokemonIndex > 0) {
@@ -253,21 +251,30 @@ searchInput.addEventListener('input', () => {
     searchPokemonByName(searchTerm);
 });
 
+// Função para exibir pokémons na lista
+function displayPokemons(pokemons) {
+    // Inicializa uma variável para armazenar o HTML a ser adicionado
+    let newHtml = '';
+    pokemons.forEach((pokemon) => {
+        // Converte o pokémon em um item de lista usando a função convertPokemonToLi
+        newHtml += convertPokemonToLi(pokemon);
+    });
+    // Adiciona o HTML gerado à lista de pokémons
+    pokemonList.innerHTML += newHtml;
+}
+
 // Função para pesquisar pokémons
 function searchPokemonByName(searchTerm) {
-    console.log("Starting search for term:", searchTerm);
     isSearching = true;
-    console.log("isSearching set to true");
     // Se o termo de pesquisa estiver vazio, carregue todos os pokémons novamente
     if (searchTerm === '') {
         isSearching = false;
+        loadingSpinner.classList.add('d-none');
         loadAllPokemons();
         return;
     }
-    
     // Limpe a lista atual de pokémons
     pokemonList.innerHTML = '';
-    
     // Carregue todos os pokémons e filtre com base no termo de pesquisa
     pokeApi.getPokemons(0, maxRecords)
         .then((pokemons) => {
@@ -279,7 +286,7 @@ function searchPokemonByName(searchTerm) {
             // Converta pokémons filtrados em HTML e adicione à lista
             const newHtml = filteredPokemons.map(convertPokemonToLi).join('');
             pokemonList.innerHTML = newHtml;
-            
+            console.log("Exibindo o ícone de carregamento");
         })
         .catch((error) => {
             console.error("Erro ao carregar os pokémons:", error);
@@ -289,15 +296,17 @@ function searchPokemonByName(searchTerm) {
 }
 
 let allPokemons = [];
-
 // Carregar todos os pokémons e armazená-los em uma variável global
 function loadAllPokemons() {
     pokeApi.getPokemons(0, maxRecords).then((pokemons) => {
         allPokemons = pokemons;
         displayPokemons(allPokemons);
+        offset = 0;
+        pokemonList.innerHTML = '';
+        loadPokemonItens(offset, limit);
+        loadingSpinner.classList.remove('d-none');
     });
 }
-
 
 // Filtrar a lista de Pokémon com base no termo de pesquisa
 function filterPokemons(searchTerm) {
@@ -306,9 +315,9 @@ function filterPokemons(searchTerm) {
     );
     // Exiba os Pokémon filtrados
     displayPokemons(filteredPokemons);
-
     // Se o termo de pesquisa estiver vazio, recarregue todos os Pokémon e redefina o offset
     if (searchTerm.trim() == '') {
+        loadingSpinner.classList.remove('d-none');
         isSearching = false;
         displayPokemons(allPokemons);
         offset = 0;
@@ -320,13 +329,6 @@ searchInput.addEventListener('input', (event) => {
     const searchTerm = event.target.value.toLowerCase();
     filterPokemons(searchTerm);
 });
-
-//Recarregar lista de pokémons
-function loadAllPokemons() {
-    offset = 0;
-    pokemonList.innerHTML = '';
-    loadPokemonItens(offset, limit);
-}
 
 const btnHelp = document.getElementById('btnHelp');
 

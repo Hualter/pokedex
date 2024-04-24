@@ -39,6 +39,7 @@
     border-color: #fff;
     justify-content: top;
     align-items: center;
+    border-radius: 10px;
 }
 
 .pokemon .number{

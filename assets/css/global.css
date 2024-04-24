@@ -195,3 +195,16 @@ p {
         border-radius: 1rem;
     }
 }
+
+#loading-spinner{
+    padding: 20px;
+    border-radius: 8px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading-spinner .spinner-border {
+    color: white;
+}
